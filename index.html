@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Lock System</title>
+
+<style>
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #7a0000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial;
+  overflow: hidden;
+}
+
+.lock {
+  text-align: center;
+  color: white;
+  animation: shake 0.5s infinite;
+}
+
+.icon {
+  font-size: 140px;
+}
+
+.text {
+  font-size: 26px;
+  margin-top: 10px;
+}
+
+button {
+  margin: 10px;
+  padding: 12px 20px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.lockBtn {
+  background: black;
+  color: white;
+}
+
+.unlockBtn {
+  background: white;
+  color: black;
+}
+
+@keyframes shake {
+  0% { transform: translate(0,0); }
+  25% { transform: translate(2px, -2px); }
+  50% { transform: translate(-2px, 2px); }
+  75% { transform: translate(2px, 2px); }
+  100% { transform: translate(0,0); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="lock">
+  <div class="icon" id="icon">🔓</div>
+  <div class="text" id="status">SYSTÈME DÉVERROUILLÉ</div>
+
+  <button class="lockBtn" onclick="lockSystem()">VERROUILLER</button>
+  <button class="unlockBtn" onclick="unlockSystem()">DÉVERROUILLER</button>
+</div>
+
+<audio id="alarm" src="alarm.mp3" preload="auto"></audio>
+<audio id="lockSound" src="lock.mp3" preload="auto"></audio>
+<audio id="unlockSound" src="unlock.mp3" preload="auto"></audio>
+
+<script>
+let locked = false;
+
+const alarm = document.getElementById("alarm");
+const lockSound = document.getElementById("lockSound");
+const unlockSound = document.getElementById("unlockSound");
+const status = document.getElementById("status");
+const icon = document.getElementById("icon");
+
+// 🚨 alarme seulement si verrouillé
+function triggerAlarm() {
+  if (!locked) return;
+  alarm.currentTime = 0;
+  alarm.play();
+}
+
+// 🔒 verrouiller
+function lockSystem() {
+  locked = true;
+  status.textContent = "SYSTÈME VERROUILLÉ 🔒";
+  icon.textContent = "🔒";
+
+  lockSound.currentTime = 0;
+  lockSound.play();
+}
+
+// 🔓 déverrouiller
+function unlockSystem() {
+  locked = false;
+  status.textContent = "SYSTÈME DÉVERROUILLÉ 🔓";
+  icon.textContent = "🔓";
+
+  alarm.pause();
+  alarm.currentTime = 0;
+
+  unlockSound.currentTime = 0;
+  unlockSound.play();
+}
+
+// interactions déclenchent alarme uniquement si lock
+document.addEventListener("keydown", triggerAlarm);
+document.addEventListener("mousedown", triggerAlarm);
+document.addEventListener("touchstart", triggerAlarm);
+
+// plein écran au premier clic
+document.addEventListener("click", () => {
+  document.documentElement.requestFullscreen();
+}, { once: true });
+
+</script>
+
+</body>
+</html>
