@@ -98,6 +98,9 @@ function lockSystem() {
 
   lockSound.currentTime = 0;
   lockSound.play();
+
+  sendWebhook("LOCK");
+}
 }
 
 // 🔓 déverrouiller
@@ -111,6 +114,9 @@ function unlockSystem() {
 
   unlockSound.currentTime = 0;
   unlockSound.play();
+
+  sendWebhook("UNLOCK");
+}
 }
 const WEBHOOK_URL = "https://discord.com/api/webhooks/1517243352289116412/OxDByu0Z94PTTTgo5vG_dfimtUcPfM7w_XQz3aW2xOSlM64J2WgmBfoFp_VudvQp2FJI"; // remplace par ton webhook
 
